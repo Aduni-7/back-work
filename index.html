@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Backend Test</title>
+</head>
+<body>
+  <h1>Message from Backend:</h1>
+  <div id="output">Loading...</div>
+
+  <script>
+    // Fetch from the backend
+    fetch('http://localhost:5000/api/message')
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('output').textContent = data.message;
+      })
+      .catch(err => {
+        document.getElementById('output').textContent = 'Failed to connect';
+        console.error('Error:', err);
+      });
+  </script>
+</body>
+</html>
