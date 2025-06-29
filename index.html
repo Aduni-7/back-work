@@ -9,7 +9,7 @@
 
   <script>
     // Fetch from the backend
-    fetch('http://localhost:5000/api/message')
+    fetch('/api/message')
       .then(res => res.json())
       .then(data => {
         document.getElementById('output').textContent = data.message;
