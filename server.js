@@ -1,30 +1,24 @@
 const express = require('express');
-const mongoose = require('mongoose');
+const app = express();
 const path = require('path');
 require('dotenv').config();
+require('./connect'); // MongoDB connection file
 
-const app = express();
-
-// Middleware
 app.use(express.json());
-app.use(express.static(path.join(__dirname))); // serve static files like index.html
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('✅ Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection failed:', err));
+// Serve static frontend files
+app.use(express.static(path.join(__dirname, 'Public')));
 
-// Routes
+// Optional: Route to serve HTML page if user visits "/"
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, 'Public', 'app.html'));
 });
 
-// Sample API route
+// Example backend API (you can customize this)
 app.get('/api/message', (req, res) => {
   res.json({ message: 'Hello from the backend!' });
 });
 
-// Start server
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
