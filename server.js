@@ -1,25 +1,20 @@
 const express = require('express');
-const app = express();
-const path = require('path');
+const mongoose = require('mongoose');
+const cors = require('cors');
 require('dotenv').config();
-require('./connect'); // MongoDB connection file
 
+const app = express();
+app.use(cors());
 app.use(express.json());
 
-// Serve static frontend files
-app.use(express.static(path.join(__dirname, 'Public')));
+// Routes
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/feedback', require('./routes/feedback'));
+// add other routes here
 
-// Optional: Route to serve HTML page if user visits "/"
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'Public', 'app.html'));
-});
-
-// Example backend API (you can customize this)
-app.get('/api/message', (req, res) => {
-  res.json({ message: 'Hello from the backend!' });
-});
-
-const PORT = process.env.PORT || 10000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    app.listen(5000, () => console.log('Server running on http://localhost:5000'));
+  })
+  .catch(err => console.error('Mongo error:', err));

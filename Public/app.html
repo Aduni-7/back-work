@@ -1,355 +1,107 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Full Stack App</title>
-  <link rel="stylesheet" href="css/style.css">
-  <style>
-    body {
-      min-block-size: 100vh;
-      margin: 0;
-      padding: 0;
-      background: url('https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?auto=format&fit=crop&w=1500&q=80') no-repeat center center fixed;
-      background-size: cover;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      position: relative;
-    }
-    .overlay {
-      position: fixed;
-      inset-block-start: 0; inset-inline-start: 0; inline-size: 100vw; block-size: 100vh;
-      background: rgba(0,0,0,0.55);
-      z-index: 0;
-    }
-    .content {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      padding-block-start: 10vh;
-    }
-    .subtitle {
-      font-size: 1.3rem;
-      margin-block-end: 2rem;
-      background: rgba(0,0,0,0.4);
-      display: inline-block;
-      padding: 0.7rem 1.5rem;
-      border-radius: 8px;
-    }
-    .owner {
-      position: fixed;
-      inset-block-end: 18px;
-      inset-inline-end: 24px;
-      background: rgba(0,0,0,0.5);
-      color: #ffd600;
-      padding: 0.5rem 1.2rem;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 1.1rem;
-      z-index: 2;
-      letter-spacing: 1px;
-    }
-    /* Menu styles */
-    .menu-btn {
-      position: fixed;
-      inset-block-start: 24px;
-      inset-inline-start: 24px;
-      z-index: 10;
-      background: rgba(0,0,0,0.7);
-      color: #ffd600;
-      border: none;
-      border-radius: 8px;
-      padding: 0.7rem 1.2rem;
-      font-size: 1.1rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .menu-btn:hover {
-      background: #ffd600;
-      color: #222;
-    }
-    .menu-options {
-      display: none;
-      position: fixed;
-      inset-block-start: 70px;
-      inset-inline-start: 24px;
-      background: rgba(0,0,0,0.85);
-      border-radius: 10px;
-      box-shadow: 0 2px 12px #000a;
-      z-index: 11;
-      min-inline-size: 220px;
-      padding: 1rem 0.5rem;
-    }
-    .menu-options.active {
-      display: block;
-    }
-    .menu-options button {
-      display: block;
-      inline-size: 100%;
-      background: none;
-      border: none;
-      color: #ffd600;
-      font-size: 1rem;
-      text-align: start;
-      padding: 0.7rem 1rem;
-      border-radius: 6px;
-      margin-block-end: 0.3rem;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-    }
-    .menu-options button:hover, .menu-options button.active {
-      background: #ffd600;
-      color: #222;
-    }
-    /* Form styles */
-    .menu-form {
-      margin-block-start: 1rem;
-      background: rgba(255,255,255,0.07);
-      padding: 1rem;
-      border-radius: 8px;
-      color: #fff;
-      display: none;
-    }
-    .menu-form.active {
-      display: block;
-    }
-    .menu-form label {
-      display: block;
-      margin-block-end: 0.3rem;
-      font-weight: bold;
-    }
-    .menu-form input, .menu-form textarea {
-      inline-size: 95%;
-      padding: 0.5rem;
-      margin-block-end: 0.8rem;
-      border-radius: 5px;
-      border: none;
-      font-size: 1rem;
-    }
-    .menu-form textarea {
-      resize: vertical;
-      min-block-size: 50px;
-    }
-    .menu-form button[type="submit"] {
-      background: #ffd600;
-      color: #222;
-      border: none;
-      border-radius: 6px;
-      padding: 0.6rem 1.2rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .menu-form button[type="submit"]:hover {
-      background: #2196f3;
-      color: #fff;
-    }
-    /* Product upload section */
-    .product-section {
-      display: none;
-      position: fixed;
-      inset-block-start: 120px;
-      inset-inline-start: 24px;
-      background: rgba(0,0,0,0.92);
-      border-radius: 10px;
-      box-shadow: 0 2px 12px #000a;
-      z-index: 12;
-      min-inline-size: 260px;
-      padding: 1.2rem 1rem 1rem 1rem;
-      color: #fff;
-      margin-block-start: 1rem;
-    }
-    .product-section.active {
-      display: block;
-    }
-    .product-section h3 {
-      margin-block-start: 0;
-      color: #ffd600;
-    }
-    .product-section label {
-      display: block;
-      margin-block-end: 0.3rem;
-      font-weight: bold;
-    }
-    .product-section input, .product-section textarea {
-      inline-size: 95%;
-      padding: 0.5rem;
-      margin-block-end: 0.8rem;
-      border-radius: 5px;
-      border: none;
-      font-size: 1rem;
-    }
-    .product-section textarea {
-      resize: vertical;
-      min-block-size: 40px;
-    }
-    .product-section button[type="submit"] {
-      background: #ffd600;
-      color: #222;
-      border: none;
-      border-radius: 6px;
-      padding: 0.6rem 1.2rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .product-section button[type="submit"]:hover {
-      background: #2196f3;
-      color: #fff;
-    }
-    .product-list {
-      margin-block-start: 1rem;
-    }
-    .product-item {
-      background: rgba(255,255,255,0.08);
-      border-radius: 6px;
-      padding: 0.5rem 0.7rem;
-      margin-block-end: 0.5rem;
-      color: #ffd600;
-    }
-  </style>
-</head>
-<body>
-  <div class="overlay"></div>
-  <!-- Menu Button and Options -->
-  <button class="menu-btn" id="menuBtn">☰ Menu</button>
-  <div class="menu-options" id="menuOptions">
-    <button id="registerBtn" class="active">Register Business</button>
-    <button id="removeBtn">Remove Business</button>
-    <button id="feedbackBtn">Give Feedback</button>
-    <!-- Register Business Form -->
-    <form class="menu-form active" id="registerForm">
-      <label for="bizName">Name of Business</label>
-      <input type="text" id="bizName" name="bizName" required>
-      <label for="bizLocation">Location of Business</label>
-      <input type="text" id="bizLocation" name="bizLocation" required>
-      <label for="bizService">What it Provides</label>
-      <textarea id="bizService" name="bizService" required></textarea>
-      <button type="submit">Register</button>
-    </form>
-    <!-- Remove Business Form -->
-    <form class="menu-form" id="removeForm">
-      <label for="removeName">Business Name to Remove</label>
-      <input type="text" id="removeName" name="removeName" required>
-      <button type="submit">Remove</button>
-    </form>
-    <!-- Feedback Form -->
-    <form class="menu-form" id="feedbackForm">
-      <label for="feedbackText">Your Feedback</label>
-      <textarea id="feedbackText" name="feedbackText" required></textarea>
-      <button type="submit">Send Feedback</button>
-    </form>
+<!-- Top bar with Menu, View Analytics, Business List, and Make Payment Dropdown -->
+<div style="position: fixed; top: 16px; left: 24px; z-index: 20; display: flex; gap: 8px;">
+  <button class="menu-btn" id="menuBtn" style="position:static;">☰ Menu</button>
+  <button id="viewAnalyticsBtn" class="menu-btn" style="position:static;">View Analytics</button>
+  <div style="position:relative;">
+    <button id="businessListBtn" class="menu-btn" style="position:static;">Business List</button>
+    <div id="businessListMenu" style="
+      display:none;
+      position:absolute;
+      top:110%;
+      left:0;
+      background:rgba(0,0,0,0.85);
+      border-radius:10px;
+      box-shadow:0 2px 12px #000a;
+      min-width:260px;
+      max-width:350px;
+      padding:1rem 1.2rem 1rem 1.2rem;
+      color:#fff;
+      text-align:left;
+      z-index:100;
+    ">
+      <!-- Businesses will be rendered here -->
+    </div>
   </div>
-  <!-- Product Upload Section -->
-  <div class="product-section" id="productSection">
-    <h3>Upload Products for Your Business</h3>
-    <form id="productForm">
-      <label for="productName">Product Name</label>
-      <input type="text" id="productName" name="productName" required>
-      <label for="productDesc">Product Description</label>
-      <textarea id="productDesc" name="productDesc" required></textarea>
-      <label for="productImg">Product Image (URL)</label>
-      <input type="url" id="productImg" name="productImg" placeholder="https://example.com/image.jpg">
-      <button type="submit">Add Product</button>
-    </form>
-    <div class="product-list" id="productList"></div>
+  <div style="position:relative;">
+    <button id="makePaymentBtn" class="menu-btn" style="position:static;">Make Payment</button>
+    <div id="makePaymentMenu" style="
+      display:none;
+      position:absolute;
+      top:110%;
+      left:0;
+      background:rgba(0,0,0,0.85);
+      border-radius:10px;
+      box-shadow:0 2px 12px #000a;
+      min-width:260px;
+      max-width:350px;
+      padding:1.2rem 1.2rem 1.2rem 1.2rem;
+      color:#ffd600;
+      text-align:left;
+      z-index:100;
+    ">
+      <form id="paymentFormDropdown" style="display:flex;flex-direction:column;gap:1rem;">
+        <label for="amountDropdown" style="font-weight:bold;">Amount (GHS)</label>
+        <input type="number" id="amountDropdown" min="0" step="0.01" required style="background:#222;color:#ffd600;border:1px solid #ffd600;border-radius:5px;padding:0.4rem;font-size:1rem;">
+        <div>
+          <span>Transaction Fee:</span>
+          <span id="feeDropdown" style="font-weight:bold;">GHS 0.00</span>
+          <!-- Change fee to 5% in future for monetization. -->
+        </div>
+        <div>
+          <span>Total:</span>
+          <span id="totalDropdown" style="font-weight:bold;">GHS 0.00</span>
+        </div>
+        <button type="submit" style="background:#ffd600;color:#222;border:none;border-radius:6px;padding:0.6rem 1.2rem;font-weight:bold;cursor:pointer;">Pay Now</button>
+      </form>
+      <div id="paymentMsgDropdown" style="margin-top:1rem;color:#4caf50;display:none;">Payment submitted!</div>
+    </div>
   </div>
-  <div class="content">
-    <h1>Welcome to Ghanaian Companies Hub</h1>
-    <p class="subtitle">This is a platform that allows businesses
-      in Ghana to connect, collaborate, and grow.</p>
-  </div>
-  <div class="owner">App Owner: Aduni Alfred</div>
-  <script>
-    // Menu toggle
-    const menuBtn = document.getElementById('menuBtn');
-    const menuOptions = document.getElementById('menuOptions');
-    const registerBtn = document.getElementById('registerBtn');
-    const removeBtn = document.getElementById('removeBtn');
-    const feedbackBtn = document.getElementById('feedbackBtn');
-    const registerForm = document.getElementById('registerForm');
-    const removeForm = document.getElementById('removeForm');
-    const feedbackForm = document.getElementById('feedbackForm');
-    const productSection = document.getElementById('productSection');
-    const productForm = document.getElementById('productForm');
-    const productList = document.getElementById('productList');
+</div>
 
-    menuBtn.onclick = () => {
-      menuOptions.classList.toggle('active');
-    };
+<!-- Remove the old static paymentSection div from the page -->
 
-    // Show only the selected form
-    function showForm(form) {
-      registerForm.classList.remove('active');
-      removeForm.classList.remove('active');
-      feedbackForm.classList.remove('active');
-      registerBtn.classList.remove('active');
-      removeBtn.classList.remove('active');
-      feedbackBtn.classList.remove('active');
-      productSection.classList.remove('active');
-      if(form === 'register') {
-        registerForm.classList.add('active');
-        registerBtn.classList.add('active');
-      } else if(form === 'remove') {
-        removeForm.classList.add('active');
-        removeBtn.classList.add('active');
-      } else if(form === 'feedback') {
-        feedbackForm.classList.add('active');
-        feedbackBtn.classList.add('active');
-      }
+<script>
+  // Payment dropdown logic
+  const makePaymentBtn = document.getElementById('makePaymentBtn');
+  const makePaymentMenu = document.getElementById('makePaymentMenu');
+  const amountInputDropdown = document.getElementById('amountDropdown');
+  const feeSpanDropdown = document.getElementById('feeDropdown');
+  const totalSpanDropdown = document.getElementById('totalDropdown');
+  const paymentFormDropdown = document.getElementById('paymentFormDropdown');
+  const paymentMsgDropdown = document.getElementById('paymentMsgDropdown');
+
+  function updateTotalDropdown() {
+    const amount = parseFloat(amountInputDropdown.value) || 0;
+    const fee = 0; // Change fee to 5% in future for monetization.
+    feeSpanDropdown.textContent = `GHS ${fee.toFixed(2)}`;
+    totalSpanDropdown.textContent = `GHS ${(amount + fee).toFixed(2)}`;
+  }
+
+  amountInputDropdown.addEventListener('input', updateTotalDropdown);
+
+  paymentFormDropdown.onsubmit = function(e) {
+    e.preventDefault();
+    paymentMsgDropdown.style.display = 'block';
+    setTimeout(() => paymentMsgDropdown.style.display = 'none', 2000);
+    paymentFormDropdown.reset();
+    updateTotalDropdown();
+  };
+
+  updateTotalDropdown();
+
+  // Show/hide Make Payment dropdown
+  makePaymentBtn.onclick = function(e) {
+    e.stopPropagation();
+    if (makePaymentMenu.style.display === 'none' || makePaymentMenu.style.display === '') {
+      makePaymentMenu.style.display = 'block';
+    } else {
+      makePaymentMenu.style.display = 'none';
     }
-    registerBtn.onclick = () => showForm('register');
-    removeBtn.onclick = () => showForm('remove');
-    feedbackBtn.onclick = () => showForm('feedback');
-
-    // Register Business Form Submission
-    registerForm.onsubmit = e => {
-      e.preventDefault();
-      menuOptions.classList.remove('active');
-      productSection.classList.add('active');
-      // Optionally, you can show the business name in the product section
-    };
-
-    // Product Upload Logic
-    productForm.onsubmit = e => {
-      e.preventDefault();
-      const name = document.getElementById('productName').value.trim();
-      const desc = document.getElementById('productDesc').value.trim();
-      const img = document.getElementById('productImg').value.trim();
-      if(name && desc) {
-        const div = document.createElement('div');
-        div.className = 'product-item';
-        div.innerHTML = `
-          <strong>${name}</strong><br>
-          <span>${desc}</span>
-          ${img ? `<div><img src="${img}" alt="${name}" style="max-inline-size:80px;max-block-size:60px;margin-block-start:6px;border-radius:6px;"></div>` : ''}
-        `;
-        productList.appendChild(div);
-        productForm.reset();
-      }
-    };
-
-    // Optional: Prevent other forms from submitting
-    removeForm.onsubmit = e => {
-      e.preventDefault();
-      alert('Business removed!');
-      menuOptions.classList.remove('active');
-      productSection.classList.remove('active');
-    };
-    feedbackForm.onsubmit = e => {
-      e.preventDefault();
-      alert('Feedback sent!');
-      menuOptions.classList.remove('active');
-      productSection.classList.remove('active');
-    };
-
-    // Close menu when clicking outside
-    document.addEventListener('click', function(e) {
-      if (!menuOptions.contains(e.target) && e.target !== menuBtn) {
-        menuOptions.classList.remove('active');
-      }
-    });
-  </script>
-  <script src="js/main.js"></script>
-</body>
-</html>
+  };
+  // Hide dropdown when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!makePaymentMenu.contains(e.target) && e.target !== makePaymentBtn) {
+      makePaymentMenu.style.display = 'none';
+    }
+  });
+</script>
