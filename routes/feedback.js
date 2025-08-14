@@ -1,11 +1,19 @@
-const express = require('express');
-const authMiddleware = require('../middleware/authMiddleware');
-const router = express.Router();
+const jwt = require('jsonwebtoken');
 
-// Example protected route
-router.post('/', authMiddleware, (req, res) => {
-  // Only logged-in users can post feedback
-  res.json({ message: 'Feedback submitted by user ID ' + req.userId });
-});
+const authMiddleware = (req, res, next) => {
+  const token = req.header('Authorization');
 
-module.exports = router;
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_secret_key');
+    req.userId = decoded.userId;
+    next();
+  } catch (err) {
+    return res.status(401).json({ message: 'Invalid token' });
+  }
+};
+
+module.exports = authMiddleware;
