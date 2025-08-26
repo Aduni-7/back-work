@@ -188,7 +188,7 @@
 
     #ai-button {
       position: fixed;
-      bottom: 20px;
+      bottom: 100px;
       left: 20px;
       background-color: #007bff;
       color: white;
@@ -198,19 +198,19 @@
       height: 50px;
       font-size: 24px;
       cursor: pointer;
-      z-index: 99;
+      z-index: 2002;
     }
 
     #ai-panel {
       position: fixed;
-      bottom: 80px;
+      bottom: 160px;
       left: 20px;
       background: white;
       padding: 10px;
       border: 1px solid #ccc;
       width: 300px;
       display: none;
-      z-index: 99;
+      z-index: 2002;
     }
 
     #ai-response {
@@ -314,7 +314,7 @@
       position: fixed;
       left: 0;
       right: 0;
-      bottom: 70px; /* Move banner up so it doesn't cover AI button/panel */
+      bottom: 0;
       z-index: 2000;
       background: #ffd600;
       color: #111;
@@ -440,34 +440,41 @@
   <div class="content">
     <h1>Welcome to Ghanaian Companies Hub</h1>
     <p class="subtitle">This is a platform that allows businesses in Ghana to connect, collaborate, and grow.</p>
+  </div>
 
-    <!-- Business Listing UI -->
-    <!-- Move business listing under the logout button, not covering anything -->
-    <div id="businessList" style="
-      position:fixed;
-      top:70px;
-      right:24px;
-      max-width:350px;
-      min-width:260px;
+  <!-- AI Button and Panel -->
+  <button id="ai-button" title="Ask AI" style="position:fixed;bottom:100px;left:20px;background-color:#007bff;color:white;border:none;border-radius:50%;width:50px;height:50px;font-size:24px;cursor:pointer;z-index:2002;">🤖</button>
+  <div id="ai-panel" style="position:fixed;bottom:160px;left:20px;background:white;padding:10px;border:1px solid #ccc;width:300px;display:none;z-index:2002;">
+    <label for="userInput" style="color:#222;font-weight:bold;">Paraphrase or Advise:</label>
+    <textarea id="userInput" style="width:90%;margin-bottom:0.7em;"></textarea>
+    <button id="sendAI" style="background:#ffd600;color:#222;border:none;border-radius:6px;padding:0.5em 1em;font-weight:bold;cursor:pointer;">Send</button>
+    <div id="ai-response"></div>
+  </div>
+
+  <!-- Business List Dropdown Button (like menu) -->
+  <div id="businessListDropdown" style="position:fixed;top:70px;right:24px;z-index:101;">
+    <button id="businessListBtn" style="background:#ffd600;color:#222;border:none;border-radius:8px;padding:0.7rem 1.2rem;font-weight:bold;cursor:pointer;box-shadow:0 2px 12px #000a;">
+      Business List
+    </button>
+    <div id="businessListMenu" style="
+      display:none;
+      margin-top:0.5rem;
       background:rgba(0,0,0,0.85);
       border-radius:10px;
       box-shadow:0 2px 12px #000a;
-      z-index:100;
+      min-width:260px;
+      max-width:350px;
       padding:1rem 1.2rem 1rem 1.2rem;
       color:#fff;
       text-align:left;
+      position:absolute;
+      right:0;
       ">
       <!-- Businesses will be rendered here -->
     </div>
   </div>
 
-  <div class="owner" style="position:fixed;inset-block-end:140px;inset-inline-end:24px;background:rgba(0,0,0,0.5);color:#ffd600;padding:0.5rem 1.2rem;border-radius:8px;font-weight:bold;font-size:1.1rem;z-index:2001;letter-spacing:1px;">
-    &copy; AdunaskAI('advice')">Get Advice</button>
-    <div id="ai-response"></div>
-  </div>
-
   <!-- Responsive Ad Banner -->
-  <!-- TODO: Replace with real ads later -->
   <div id="adBanner" style="
     position:fixed;
     left:0;
@@ -494,29 +501,6 @@
   <!-- Add logout button inside your app interface, e.g. top right -->
   <button id="logoutBtn" style="position:fixed;top:16px;right:24px;z-index:100;display:none;background:#ffd600;color:#222;border:none;border-radius:8px;padding:0.7rem 1.2rem;font-weight:bold;cursor:pointer;">Logout</button>
 
-  <!-- Business List Dropdown Button (like menu) -->
-  <div id="businessListDropdown" style="position:fixed;top:70px;right:24px;z-index:101;">
-    <button id="businessListBtn" style="background:#ffd600;color:#222;border:none;border-radius:8px;padding:0.7rem 1.2rem;font-weight:bold;cursor:pointer;box-shadow:0 2px 12px #000a;">
-      Business List
-    </button>
-    <div id="businessListMenu" style="
-      display:none;
-      margin-top:0.5rem;
-      background:rgba(0,0,0,0.85);
-      border-radius:10px;
-      box-shadow:0 2px 12px #000a;
-      min-width:260px;
-      max-width:350px;
-      padding:1rem 1.2rem 1rem 1.2rem;
-      color:#fff;
-      text-align:left;
-      position:absolute;
-      right:0;
-      ">
-      <!-- Businesses will be rendered here -->
-    </div>
-  </div>
-
   <!-- Product Page Modal -->
   <div id="productPageModal" style="display:none;position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,0.93);overflow:auto;">
     <div style="max-width:700px;margin:3rem auto;background:#222;padding:2rem 2.5rem;border-radius:12px;box-shadow:0 2px 12px #000a;color:#ffd600;">
@@ -526,12 +510,19 @@
     </div>
   </div>
 
+  <div class="owner" style="position:fixed;bottom:70px;right:24px;background:rgba(0,0,0,0.5);color:#ffd600;padding:0.5rem 1.2rem;border-radius:8px;font-weight:bold;font-size:1.1rem;z-index:2001;letter-spacing:1px;">
+    &copy; Aduni Alfred
+  </div>
+
   <script>
     const menuBtn = document.getElementById('menuBtn');
     const menuOptions = document.getElementById('menuOptions');
     const subOptionContainer = document.getElementById('subOptionContainer');
     const aiButton = document.getElementById('ai-button');
     const aiPanel = document.getElementById('ai-panel');
+    const sendAI = document.getElementById('sendAI');
+    const userInput = document.getElementById('userInput');
+    const aiResponse = document.getElementById('ai-response');
 
     // Map main options to their suboption form IDs
     const formButtons = {
@@ -609,13 +600,15 @@
 
     // Simple localStorage-based user store for demo
     function getUser() {
-      return JSON.parse(localStorage.getItem('user') || 'null');
+      return JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || 'null');
     }
     function setUser(user, keep) {
       if (keep) {
         localStorage.setItem('user', JSON.stringify(user));
+        sessionStorage.removeItem('user');
       } else {
         sessionStorage.setItem('user', JSON.stringify(user));
+        localStorage.removeItem('user');
       }
     }
     function clearUser() {
@@ -623,7 +616,7 @@
       sessionStorage.removeItem('user');
     }
     function isLoggedIn() {
-      return !!(getUser() || JSON.parse(sessionStorage.getItem('user') || 'null'));
+      return !!getUser();
     }
 
     function showAuth(show, isLogin) {
@@ -634,7 +627,6 @@
       switchToRegister.style.display = isLogin ? 'inline' : 'none';
       switchToLogin.style.display = isLogin ? 'none' : 'inline';
       document.body.style.overflow = show ? 'hidden' : '';
-      // Hide messages
       document.getElementById('registerError').style.display = 'none';
       document.getElementById('registerSuccess').style.display = 'none';
       document.getElementById('loginError').style.display = 'none';
@@ -652,7 +644,7 @@
       const keep = document.getElementById('keepLoggedIn').checked;
       const regUsers = JSON.parse(localStorage.getItem('users') || '{}');
       if (regUsers[email] && regUsers[email].pass === pass) {
-        setUser({email}, keep);
+        setUser({email: email, name: regUsers[email].name}, keep);
         showAuth(false, true);
         logoutBtn.style.display = 'block';
         showMenuOptions();
@@ -667,7 +659,6 @@
       const name = document.getElementById('registerName').value.trim();
       const email = document.getElementById('registerEmail').value.trim();
       const pass = document.getElementById('registerPass').value;
-      const keep = document.getElementById('keepRegisteredIn').checked;
       if (!email.match(/.+@gmail\.com$/)) {
         document.getElementById('registerError').textContent = 'Please use a Gmail address';
         document.getElementById('registerError').style.display = 'block';
@@ -685,9 +676,7 @@
       localStorage.setItem('users', JSON.stringify(regUsers));
       document.getElementById('registerError').style.display = 'none';
       document.getElementById('registerSuccess').style.display = 'block';
-      // Optionally clear fields
       document.getElementById('registerPass').value = '';
-      // After a short delay, switch to login form
       setTimeout(() => {
         showAuth(true, true);
         document.getElementById('loginEmail').value = email;
@@ -714,20 +703,19 @@
     });
 
     aiButton.onclick = () => {
-      Object.values(formButtons).forEach(fid => {
-        const el = document.getElementById(fid);
-        if (el) el.style.display = 'none';
-      });
-      menuOptions.style.display = 'none';
-      subOptionContainer.style.display = 'none';
       aiPanel.style.display = aiPanel.style.display === 'none' ? 'block' : 'none';
+    };
+
+    sendAI.onclick = () => {
+      const message = userInput.value.trim();
+      if (!message) return;
+      // Dummy AI paraphrase/advice logic
+      aiResponse.innerHTML = `<div style="color:#222;">AI Suggestion: "${message.split(' ').reverse().join(' ')}" <br>Advice: Be polite and clear!</div>`;
     };
 
     // View Analytics feature (free for now)
     document.getElementById('viewAnalyticsBtn').onclick = function() {
-      // TODO: Restrict to premium later
       alert('Analytics feature accessed!');
-      // Log user email in localStorage
       let user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || 'null');
       if (user && user.email) {
         localStorage.setItem('analytics_last_user', user.email);
@@ -836,10 +824,11 @@
       container.innerHTML = `
         <form onsubmit="submitProductMessage(event, ${idx})" style="background:#222;padding:1em;border-radius:8px;">
           <label>Message to Owner:</label>
-          <textarea required style="width:90%;margin-bottom:0.7em;"></textarea>
+          <textarea id="productMessageInput${idx}" required style="width:90%;margin-bottom:0.7em;"></textarea>
           <button type="submit" style="background:#2196f3;color:#fff;border:none;border-radius:6px;padding:0.6em 1.2em;font-weight:bold;cursor:pointer;">Send Message</button>
           <button type="button" onclick="openAIForProduct(${idx})" style="background:#ffd600;color:#222;border:none;border-radius:6px;padding:0.6em 1.2em;font-weight:bold;cursor:pointer;margin-left:1em;">Use AI</button>
         </form>
+        <div id="aiSuggestion${idx}" style="margin-top:0.7em;color:#ffd600;"></div>
       `;
       container.style.display = 'block';
     };
@@ -854,8 +843,16 @@
     // Open AI panel for product messaging
     window.openAIForProduct = function(idx) {
       aiPanel.style.display = 'block';
-      document.getElementById('userInput').value = '';
-      document.getElementById('ai-response').innerHTML = '';
+      userInput.value = document.getElementById('productMessageInput' + idx).value;
+      aiResponse.innerHTML = '';
+      sendAI.onclick = function() {
+        const message = userInput.value.trim();
+        if (!message) return;
+        // Dummy AI paraphrase/advice logic
+        document.getElementById('aiSuggestion' + idx).innerHTML =
+          `<div style="color:#ffd600;">AI Suggestion: "${message.split(' ').reverse().join(' ')}"<br>Advice: Be polite and clear!</div>`;
+        aiPanel.style.display = 'none';
+      };
     };
 
     // Dummy business data
@@ -865,51 +862,8 @@
       { name: "Cape Coast Creatives", location: "Cape Coast", verified: false }
     ];
 
-    // Render business list
-    function renderBusinesses() {
-      const list = document.getElementById('businessList');
-      list.innerHTML = '<h2 style="color:#ffd600;font-size:1.1rem;margin-top:0;margin-bottom:0.7rem;">Business Listings</h2>' +
-        businesses.map((biz, idx) => `
-          <div style="margin:0.7rem 0;padding:0.7rem 0.5rem;border-radius:8px;display:flex;align-items:center;justify-content:space-between;gap:0.7rem;background:rgba(0,0,0,0.3);">
-            <div>
-              <div style="font-size:1rem;font-weight:bold;">${biz.name}</div>
-              <div style="font-size:0.93rem;color:#ffd600;">${biz.location}</div>
-            </div>
-            <div>
-              ${biz.verified
-                ? `<span style="background:#ffd600;color:#222;padding:0.3em 0.7em;border-radius:6px;font-weight:bold;display:inline-flex;align-items:center;gap:0.3em;">✔ Verified</span>
-                   <button class="unverify-btn" data-idx="${idx}" style="background:#222;color:#ffd600;border:1px solid #ffd600;border-radius:6px;padding:0.3em 0.8em;font-weight:bold;cursor:pointer;margin-left:0.5em;">Unverify</button>`
-                : `<button class="verify-btn" data-idx="${idx}" style="background:#ffd600;color:#222;border:none;border-radius:6px;padding:0.4em 1em;font-weight:bold;cursor:pointer;">Verify</button>`
-              }
-            </div>
-          </div>
-        `).join('');
-      // Attach event listeners to verify/unverify buttons
-      document.querySelectorAll('.verify-btn').forEach(btn => {
-        btn.onclick = function() {
-          const idx = this.getAttribute('data-idx');
-          // TODO: Add payment here later
-          businesses[idx].verified = true;
-          renderBusinesses();
-        };
-      });
-      document.querySelectorAll('.unverify-btn').forEach(btn => {
-        btn.onclick = function() {
-          const idx = this.getAttribute('data-idx');
-          businesses[idx].verified = false;
-          renderBusinesses();
-        };
-      });
-    }
-
-    // Initial render
-    renderBusinesses();
-
-    // On page load, show only the menu
-    showMenuOptions();
-
     // Render business list dropdown
-    function renderBusinesses() {
+    function renderBusinessesDropdown() {
       const list = document.getElementById('businessListMenu');
       list.innerHTML = '<h2 style="color:#ffd600;font-size:1.1rem;margin-top:0;margin-bottom:0.7rem;">Business Listings</h2>' +
         businesses.map((biz, idx) => `
@@ -931,17 +885,18 @@
       document.querySelectorAll('.verify-btn').forEach(btn => {
         btn.onclick = function() {
           const idx = this.getAttribute('data-idx');
-          // TODO: Add payment here later
           businesses[idx].verified = true;
-          renderBusinesses();
+          renderBusinessesDropdown();
         };
       });
       document.querySelectorAll('.unverify-btn').forEach(btn => {
         btn.onclick = function() {
           const idx = this.getAttribute('data-idx');
           businesses[idx].verified = false;
-          renderBusinesses();
+          renderBusinessesDropdown();
         };
+      });
+    }
 
     // Show/hide business list dropdown
     const businessListBtn = document.getElementById('businessListBtn');
@@ -949,7 +904,7 @@
     businessListBtn.onclick = function(e) {
       e.stopPropagation();
       if (businessListMenu.style.display === 'none' || businessListMenu.style.display === '') {
-        renderBusinesses();
+        renderBusinessesDropdown();
         businessListMenu.style.display = 'block';
       } else {
         businessListMenu.style.display = 'none';
